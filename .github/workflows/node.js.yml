@@ -29,8 +29,14 @@ jobs:
     - run: npm test
     - name: Install PM2
       run: npm install pm2 -g
-    - name: Start Application with PM2
-      run: pm2 start App.js
+    - name: Start or Restart Application with PM2
+      run: |
+        if pm2 list | grep -q App; then
+          pm2 restart App.js
+        else
+          pm2 start App.js
+        fi
+
     - name: Save PM2 process list
       run: pm2 save
     
